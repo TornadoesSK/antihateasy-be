@@ -56,9 +56,6 @@ def post_user():
           name:
             type: string
             description: Unique name for user
-          email:
-            type: string
-            desc: Unique email for user
   responses:
     200:
       description: new user added successfully
@@ -75,7 +72,7 @@ def post_user():
   response = create_user(body)
 
   if response:
-    return success_message()
+    return create_success_message(response)
   else:
     return create_error_message("User already exists", 400)
 
@@ -110,7 +107,7 @@ def post_message():
   response = create_message(body)
 
   if response:
-    return success_message("Messages added successfully")
+    return create_success_message("Messages added successfully")
   else:
     return create_error_message("I have no idea what happend", 500)
 
@@ -131,6 +128,6 @@ def create_error_message(message: str, httpCode: int = 500):
   error_message = {"error": True, "message": message}
   return jsonify(error_message), httpCode
 
-def success_message(message = "Success"):
+def create_success_message(message: str = "Success"):
   success_message = {"success": True, "message": message}
   return jsonify(success_message), 200
