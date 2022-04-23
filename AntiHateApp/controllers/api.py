@@ -81,6 +81,27 @@ def post_user():
 
 @api.route("/message", methods=["POST"])
 def post_message():
+  """
+  Addes new message to database.
+  ---
+  parameters:
+    - name: body
+      in: body
+      required: true
+      schema:
+        properties:
+          text:
+            type: string
+            description: Text, mae 1000 chars
+          userId:
+            type: int
+            desc: ID of user
+  responses:
+    200:
+      description: new user added successfully
+    422:
+      description: missing body
+  """
   body = request.get_json()
 
   if not body or body == "":
@@ -95,6 +116,13 @@ def post_message():
 
 @api.route("/message/all", methods=["GET"])
 def get_messages():
+  """
+  Returns all messages.
+  ---
+  responses:
+    200:
+      description: List of all messages
+  """
   messages = get_all_messages()
   return jsonify(messages), 200
 
