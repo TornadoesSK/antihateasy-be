@@ -43,11 +43,14 @@ def post_user():
   Addes new user to database.
   ---
   parameters:
-    - name: name
+    - name: body
       in: body
       required: true
-      type: string
-      description: Unique name for user
+      type: object
+      schema:
+        properties:
+          name:
+            type: string
   responses:
     200:
       description: new user added successfully
@@ -68,12 +71,12 @@ def post_user():
     422:
       description: missing body
   """
-  name = request.get_json()
+  body = request.get_json()
 
-  if not name or name == "":
+  if not body or body == "":
     return create_error_message("Missing name", 422)
   
-  response = create_user(name)
+  response = create_user(body["name"])
 
   if response:
     return jsonify(response.as_dict())
