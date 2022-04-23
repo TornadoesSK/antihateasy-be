@@ -72,7 +72,7 @@ def post_user():
   response = create_user(body)
 
   if response:
-    return create_success_message(response)
+    return {"id": response}
   else:
     return create_error_message("User already exists", 400)
 
