@@ -15,7 +15,7 @@ def create_user(body):
     return user.id
 
 def create_message(body):
-    message = Message(text=body['text'], user_id=body["userId"])
+    message = Message(text=body['text'], user_id=body["user_id"])
     db.session.add(message)
     db.session.commit()
     return True

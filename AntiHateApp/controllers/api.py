@@ -90,7 +90,7 @@ def post_message():
           text:
             type: string
             description: Text, mae 1000 chars
-          userId:
+          user_id:
             type: int
             desc: ID of user
   responses:
