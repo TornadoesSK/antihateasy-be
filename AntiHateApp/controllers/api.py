@@ -5,23 +5,8 @@ from AntiHateApp.services.service import *
 
 api = Blueprint('api', __name__)
 
-@api.route('/test/<name>', methods=['GET'])
-def get_test(name: str):
-    """
-    Example endpoint returning a list of colors by palette
-    This is using docstrings for specifications.
-    ---
-    responses:
-      200:
-        description: A list of colors (may be filtered by palette)
-    parameters:
-      - name: name
-        in: path
-        type: string
-    """
-    return jsonify("Hello " + name + "!")
-
 @api.route('/user/<name>', methods=['GET'])
+
 def get_user_by_name(name: str):
   """
   Returns user from database.
@@ -30,6 +15,15 @@ def get_user_by_name(name: str):
   responses:
     200:
       description: user
+      schema:
+        type: object
+        properties:
+          id:
+            type: integer
+            required: true
+          username:
+            type: string
+            required: true
     404:
       description: No user with given username found
   parameters:
@@ -59,6 +53,15 @@ def post_user():
   responses:
     200:
       description: new user added successfully
+      schema:
+        type: object
+        properties:
+          id:
+            type: integer
+            required: true
+          username:
+            type: string
+            required: true
     400:
       description: user already exists
     422:
@@ -119,6 +122,17 @@ def get_messages():
   responses:
     200:
       description: List of all messages
+      schema:
+        type: array
+        items:
+          type: object
+          properties:
+            user_id:
+              type: integer
+              required: true
+            text:
+              type: string
+              required: true
   """
   messages = get_all_messages()
   return jsonify(messages), 200
