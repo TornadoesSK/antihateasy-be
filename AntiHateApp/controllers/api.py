@@ -72,7 +72,7 @@ def post_user():
   response = create_user(body)
 
   if response:
-    return {"id": response}
+    return jsonify(response.as_dict())
   else:
     return create_error_message("User already exists", 400)
 

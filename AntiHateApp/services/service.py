@@ -12,7 +12,7 @@ def create_user(body):
     
     db.session.add(user)
     db.session.commit()
-    return user.id
+    return user
 
 def create_message(body):
     message = Message(text=body['text'], user_id=body["user_id"])
