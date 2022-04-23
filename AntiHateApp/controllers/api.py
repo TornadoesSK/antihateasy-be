@@ -6,7 +6,6 @@ from AntiHateApp.services.service import *
 api = Blueprint('api', __name__)
 
 @api.route('/user/<name>', methods=['GET'])
-
 def get_user_by_name(name: str):
   """
   Returns user from database.
@@ -20,10 +19,11 @@ def get_user_by_name(name: str):
         properties:
           id:
             type: integer
-            required: true
           username:
             type: string
-            required: true
+        required:
+          -id
+          -username
     404:
       description: No user with given username found
   parameters:
@@ -60,6 +60,9 @@ def post_user():
           username:
             type: string
             required: true
+        required:
+          -id
+          -username
     400:
       description: user already exists
     422:
@@ -86,19 +89,20 @@ def post_message():
     - name: body
       in: body
       required: true
+      type: object
       schema:
         properties:
           text:
             type: string
             required: true
-            description: Text, mae 1000 chars
           user_id:
             type: integer
             required: true
-            desc: ID of user
   responses:
     200:
       description: new user added successfully
+      schema:
+        type: string
     422:
       description: missing body
   """
@@ -133,6 +137,9 @@ def get_messages():
             text:
               type: string
               required: true
+          required:
+            -user_id
+            -text
   """
   messages = get_all_messages()
   return jsonify(messages), 200
