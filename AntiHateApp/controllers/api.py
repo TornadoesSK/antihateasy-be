@@ -79,6 +79,25 @@ def post_user():
   else:
     return create_error_message("User already exists", 400)
 
+@api.route("/message", methods=["POST"])
+def post_message():
+  body = request.get_json()
+
+  if not body or body == "":
+    return create_error_message("Missing body", 422)
+  
+  response = create_message(body)
+
+  if response:
+    return success_message("Messages added successfully")
+  else:
+    return create_error_message("I have no idea what happend", 500)
+
+@api.route("/message/all", methods=["GET"])
+def get_messages():
+  messages = get_all_messages()
+  return jsonify(messages), 200
+
 
 def create_error_message(message: str, httpCode: int = 500):
   error_message = {"error": True, "message": message}
