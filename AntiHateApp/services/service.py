@@ -4,9 +4,9 @@ from AntiHateApp import db
 def user_by_name(name: str):
     return User.query.filter_by(username=name).first()
 
-def create_user(body):
-    user = User(username=body['name'])
-    exists = User.query.filter_by(username=body['name']).first()
+def create_user(name):
+    user = User(username=name)
+    exists = User.query.filter_by(username=name).first()
     if exists != None:
         return False
     

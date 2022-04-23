@@ -30,6 +30,7 @@ def get_user_by_name(name: str):
     - name: name
       in: path
       type: string
+      required: true
   """
   user = user_by_name(name)
   if (user == None):
@@ -42,14 +43,11 @@ def post_user():
   Addes new user to database.
   ---
   parameters:
-    - name: body
+    - name: name
       in: body
       required: true
-      schema:
-        properties:
-          name:
-            type: string
-            description: Unique name for user
+      type: string
+      description: Unique name for user
   responses:
     200:
       description: new user added successfully
@@ -67,12 +65,12 @@ def post_user():
     422:
       description: missing body
   """
-  body = request.get_json()
+  name = request.get_json()
 
-  if not body or body == "":
-    return create_error_message("Missing body", 422)
+  if not name or name == "":
+    return create_error_message("Missing name", 422)
   
-  response = create_user(body)
+  response = create_user(name)
 
   if response:
     return jsonify(response.as_dict())
@@ -92,9 +90,11 @@ def post_message():
         properties:
           text:
             type: string
+            required: true
             description: Text, mae 1000 chars
           user_id:
-            type: int
+            type: integer
+            required: true
             desc: ID of user
   responses:
     200:
