@@ -33,7 +33,7 @@ def get_user_by_name(name: str):
     404:
       description: No user with given username found
   parameters:
-    - name: username of user
+    - name: name
       in: path
       type: string
   """
