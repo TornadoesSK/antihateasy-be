@@ -64,13 +64,13 @@ def post_user():
       description: new user added successfully
     400:
       description: user already exists
-    401:
+    422:
       description: missing body
   """
   body = request.get_json()
 
   if not body or body == "":
-    return create_error_message("Missing body", 401)
+    return create_error_message("Missing body", 422)
   
   response = create_user(body)
 
