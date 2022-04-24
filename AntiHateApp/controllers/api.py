@@ -134,14 +134,14 @@ def get_messages():
         items:
           type: object
           properties:
-            user_id:
-              type: integer
+            name:
+              type: string
               required: true
             text:
               type: string
               required: true
           required:
-            -user_id
+            -name
             -text
   """
   messages = get_all_messages()
