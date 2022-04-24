@@ -21,8 +21,9 @@ def create_message(body):
     return True
 
 def get_all_messages():
-    messages = Message.query.all()
+    messages = Message.query.order_by(Message.id.desc()).all()
     response = list()
     for message in messages:
-        response.append(message.as_dict())
+        name = User.query.filter_by(id=message.user_id).first().username
+        response.append({"message": message.text, "name": name, })
     return tuple(response)
