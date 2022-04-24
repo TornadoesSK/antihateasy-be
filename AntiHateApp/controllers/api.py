@@ -5,22 +5,6 @@ from AntiHateApp.services.service import *
 
 api = Blueprint('api', __name__)
 
-@api.route('/test/<name>', methods=['GET'])
-def get_test(name: str):
-    """
-    Example endpoint returning a list of colors by palette
-    This is using docstrings for specifications.
-    ---
-    responses:
-      200:
-        description: A list of colors (may be filtered by palette)
-    parameters:
-      - name: name
-        in: path
-        type: string
-    """
-    return jsonify("Hello " + name + "!")
-
 @api.route('/user/<name>', methods=['GET'])
 def get_user_by_name(name: str):
   """
@@ -30,12 +14,23 @@ def get_user_by_name(name: str):
   responses:
     200:
       description: user
+      schema:
+        type: object
+        properties:
+          id:
+            type: integer
+          username:
+            type: string
+        required:
+          -id
+          -username
     404:
       description: No user with given username found
   parameters:
     - name: name
       in: path
       type: string
+      required: true
   """
   user = user_by_name(name)
   if (user == None):
@@ -51,14 +46,26 @@ def post_user():
     - name: body
       in: body
       required: true
+      type: object
       schema:
         properties:
           name:
             type: string
-            description: Unique name for user
   responses:
     200:
       description: new user added successfully
+      schema:
+        type: object
+        properties:
+          id:
+            type: integer
+            required: true
+          username:
+            type: string
+            required: true
+        required:
+          -id
+          -username
     400:
       description: user already exists
     422:
@@ -67,12 +74,12 @@ def post_user():
   body = request.get_json()
 
   if not body or body == "":
-    return create_error_message("Missing body", 422)
+    return create_error_message("Missing name", 422)
   
-  response = create_user(body)
+  response = create_user(body["name"])
 
   if response:
-    return {"id": response}
+    return jsonify(response.as_dict())
   else:
     return create_error_message("User already exists", 400)
 
@@ -85,17 +92,20 @@ def post_message():
     - name: body
       in: body
       required: true
+      type: object
       schema:
         properties:
           text:
             type: string
-            description: Text, mae 1000 chars
+            required: true
           user_id:
-            type: int
-            desc: ID of user
+            type: integer
+            required: true
   responses:
     200:
       description: new user added successfully
+      schema:
+        type: string
     422:
       description: missing body
   """
@@ -119,6 +129,20 @@ def get_messages():
   responses:
     200:
       description: List of all messages
+      schema:
+        type: array
+        items:
+          type: object
+          properties:
+            user_id:
+              type: integer
+              required: true
+            text:
+              type: string
+              required: true
+          required:
+            -user_id
+            -text
   """
   messages = get_all_messages()
   return jsonify(messages), 200
