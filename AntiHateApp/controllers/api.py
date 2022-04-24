@@ -188,6 +188,10 @@ def get_message_hate():
       description: missing body
   """
   message = request.get_json()['text']
+
+  if not message or message == "":
+    return create_error_message("Missing body", 422)
+
   hate = checkHate(message)
 
   return jsonify({"hate": hate}), 200

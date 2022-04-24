@@ -21,7 +21,7 @@ def create_message(body):
         if hateful:
             return False
 
-    message = Message(text=body['text'], user_id=body["user_id"])
+    message = Message(text=body['text'], user_id=body["user_id"], hate=False)
     db.session.add(message)
     db.session.commit()
     return True
@@ -31,7 +31,7 @@ def get_all_messages():
     response = list()
     for message in messages:
         name = User.query.filter_by(id=message.user_id).first().username
-        response.append({"content": message.text, "name": name, })
+        response.append({"content": message.text, "name": name, "hate": message.hate})
     return tuple(response)
 
 def checkHate(text: str):
