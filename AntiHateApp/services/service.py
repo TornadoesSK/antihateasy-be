@@ -1,5 +1,6 @@
 from AntiHateApp.database.models import User, Message
 from AntiHateApp import db
+import requests
 
 def user_by_name(name: str):
     return User.query.filter_by(username=name).first()
@@ -35,4 +36,5 @@ def get_all_messages():
     return tuple(response)
 
 def checkHate(text: str):
-    return len(text) % 3 == 0
+    response = requests.post('http://localhost:6969/gettextsentiment', json = {"tweet": text}).json()
+    return response['hide']
