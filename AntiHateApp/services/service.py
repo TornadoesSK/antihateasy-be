@@ -15,6 +15,12 @@ def create_user(name):
     return user
 
 def create_message(body):
+    force = body['force']
+    if not force:
+        hateful = checkHate(body['text'])
+        if hateful:
+            return False
+
     message = Message(text=body['text'], user_id=body["user_id"])
     db.session.add(message)
     db.session.commit()
@@ -27,3 +33,6 @@ def get_all_messages():
         name = User.query.filter_by(id=message.user_id).first().username
         response.append({"content": message.text, "name": name, })
     return tuple(response)
+
+def checkHate(text: str):
+    return len(text) % 3 == 0

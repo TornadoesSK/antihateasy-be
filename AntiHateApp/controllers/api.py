@@ -101,6 +101,8 @@ def post_message():
           user_id:
             type: integer
             required: true
+          force:
+            type: boolean
   responses:
     200:
       description: new user added successfully
@@ -146,6 +148,34 @@ def get_messages():
   """
   messages = get_all_messages()
   return jsonify(messages), 200
+
+@api.route("/message/hate", methods=["POST"])
+def get_messages():
+  """
+  parameters:
+    - name: body
+      in: body
+      required: true
+      type: object
+      schema:
+        type: object
+        properties:
+          text:
+            type: string
+            required: true
+  responses:
+    200:
+      description: 
+      schema:
+        hate:
+          type: boolean
+    422:
+      description: missing body
+  """
+  message = request.get_json()['text']
+  hate = checkHate(message)
+
+  return jsonify({"hate": hate}), 200
 
 
 def create_error_message(message: str, httpCode: int = 500):
