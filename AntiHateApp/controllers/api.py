@@ -121,7 +121,7 @@ def post_message():
   if response:
     return create_success_message("Messages added successfully")
   else:
-    return create_error_message("I have no idea what happend", 500)
+    return jsonify({"success": False, "message": "Hateful message"})
 
 @api.route("/message/all", methods=["GET"])
 def get_messages():
@@ -150,7 +150,7 @@ def get_messages():
   return jsonify(messages), 200
 
 @api.route("/message/hate", methods=["POST"])
-def get_messages():
+def get_message_hate():
   """
   parameters:
     - name: body
