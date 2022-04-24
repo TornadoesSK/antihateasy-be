@@ -25,5 +25,5 @@ def get_all_messages():
     response = list()
     for message in messages:
         name = User.query.filter_by(id=message.user_id).first().username
-        response.append({"message": message.text, "name": name, })
+        response.append({"content": message.text, "name": name, })
     return tuple(response)

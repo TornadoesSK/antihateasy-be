@@ -137,12 +137,12 @@ def get_messages():
             name:
               type: string
               required: true
-            text:
+            content:
               type: string
               required: true
           required:
             -name
-            -text
+            -content
   """
   messages = get_all_messages()
   return jsonify(messages), 200
