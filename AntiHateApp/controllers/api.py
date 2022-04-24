@@ -92,8 +92,8 @@ def post_message():
     - name: body
       in: body
       required: true
-      type: object
       schema:
+        type: object
         properties:
           text:
             type: string
@@ -103,11 +103,26 @@ def post_message():
             required: true
           force:
             type: boolean
+            required: true
+        required:
+          -text
+          -user_id
+          -force
   responses:
     200:
       description: new user added successfully
       schema:
-        type: string
+        type: object
+        properties:
+          success:
+            type: boolean
+            required: true
+          message:
+            type: string
+            required: true
+        required:
+          -success
+          -message
     422:
       description: missing body
   """
