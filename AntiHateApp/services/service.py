@@ -16,12 +16,12 @@ def create_user(name):
 
 def create_message(body):
     force = body['force']
+    hateful = checkHate(body['text'])
     if not force:
-        hateful = checkHate(body['text'])
         if hateful:
             return False
 
-    message = Message(text=body['text'], user_id=body["user_id"], hate=False)
+    message = Message(text=body['text'], user_id=body["user_id"], hate=hateful)
     db.session.add(message)
     db.session.commit()
     return True
